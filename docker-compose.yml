@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  #PHP
+  app_laravel:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: app_laravel
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app_laravel
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx
+  webserver_nginx:
+    image: nginx:1.23.3-alpine-slim
+    container_name: webserver_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "7777:80"
+      - "447:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/config/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+  #MySQL
+  db_mysql:
+    image: mysql:5.7.22
+    container_name: db_mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3399:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: LuY7!dsQ
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/config/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  #phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:5.2.0
+    environment:
+      - PMA_HOST=db_mysql
+      - MYSQL_ROOT_PASSWORD=LuY7!dsQ
+    depends_on:
+      - webserver_nginx
+    ports:
+      - "8888:80"
+    networks:
+        - app-network
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+
+#Networks
+networks:
+  app-network:
+    driver: bridge
