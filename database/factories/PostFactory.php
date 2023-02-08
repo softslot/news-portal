@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -17,7 +18,10 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => Str::ucfirst(fake()->words(4, true)),
+            'description' => fake()->text(3000),
+            'preview' => fake()->text(50),
+            'thumbnail' => fake()->imageUrl(300, 300, null, false),
         ];
     }
 }
