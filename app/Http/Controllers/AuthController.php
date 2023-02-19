@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\Registration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
 
 class AuthController extends Controller
@@ -35,6 +37,8 @@ class AuthController extends Controller
         if ($user) {
             Auth::guard('web')->login($user);
         }
+
+        Mail::to($user)->send(new Registration());
 
         return redirect()->to(RouteServiceProvider::HOME);
     }
