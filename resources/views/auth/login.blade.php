@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <x-form.link href="#">Забыли пароль?</x-form.link>
+            <x-form.link href="{{ route('password_recovery') }}">Забыли пароль?</x-form.link>
         </div>
 
         <div>

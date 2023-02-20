@@ -25,6 +25,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login_process', [AuthController::class, 'login'])->name('login_process');
+
+    Route::get('/password_recovery', [AuthController::class, 'showPasswordRecoveryForm'])->name('password_recovery');
+    Route::post('/password_recovery_process', [AuthController::class, 'passwordRecovery'])->name('password_recovery_process');
 });
 
 Route::middleware('auth')->group(function () {
