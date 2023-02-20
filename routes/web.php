@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -15,7 +16,7 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::view('/', 'main')->name('main');
+Route::get('/', [MainController::class, 'index'])->name('main');
 
 Route::resource('posts', PostController::class);
 
