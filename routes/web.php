@@ -19,7 +19,7 @@ Route::view('/', 'main')->name('main');
 
 Route::resource('posts', PostController::class);
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register_process', [AuthController::class, 'register'])->name('register_process');
 
@@ -27,4 +27,6 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login_process', [AuthController::class, 'login'])->name('login_process');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
