@@ -21,7 +21,7 @@ class PostFactory extends Factory
             'title' => Str::ucfirst(fake()->words(4, true)),
             'description' => fake()->text(3000),
             'preview' => fake()->text(50),
-            'thumbnail' => fake()->imageUrl(300, 300, null, false),
+            'thumbnail' => fake()->imageUrl(600, 600, null, false),
         ];
     }
 }
