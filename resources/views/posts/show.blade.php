@@ -13,6 +13,34 @@
                     </p>
                 </div>
             </div>
+
+            <div>
+                <section class="rounded-b-lg mt-4">
+                    @auth
+                        <x-form method="POST" action="{{ route('comment', $post->id) }}">
+                            <textarea name="text"
+                                    class="w-full shadow-inner p-4 mb-4 rounded-lg focus:shadow-outline text-2xl border-0 @error('text') border-2 border-red-600 @enderror"
+                                    placeholder="Ваш комментарий..." spellcheck="false">{{ old('text') }}</textarea>
+                            <x-form.input-error :messages="$errors->get('text')" />
+                            
+                            <x-form.button class="font-bold py-2 px-4 bg-purple-400 text-lg shadow-md rounded-lg">Написать</x-form.button>
+                        </x-form>
+                    @endauth
+
+                    @if ($post->comments->isNotEmpty())
+                        <div id="task-comments" class="pt-4">
+                            @foreach ($post->comments as $comment)
+                                <div class="bg-white rounded-lg p-3  flex flex-col justify-center items-center md:items-start shadow-lg mb-4">
+                                    <div class="flex flex-row justify-center mr-2">
+                                        <h3 class="text-purple-600 font-semibold text-lg text-center md:text-left">{{ $comment->user->name }}</h3>
+                                    </div>
+                                    <p style="width: 90%" class="text-gray-600 text-lg text-center md:text-left">{{ $comment->text }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </section>
+            </div>
         </div>
     </div>
 

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 
 class PostController extends Controller
 {
@@ -75,6 +78,13 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         //
+    }
+
+    public function comment(Post $post, CommentRequest $request): RedirectResponse
+    {
+        $post->comments()->create($request->validated());
+
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
